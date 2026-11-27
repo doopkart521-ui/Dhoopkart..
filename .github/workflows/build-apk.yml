@@ -28,11 +28,8 @@ jobs:
         with:
           channel: stable
 
-      - name: Generate Android project if missing
-        run: |
-          if [ ! -d android ]; then
-            flutter create --platforms=android .
-          fi
+           - name: Show Android Package Name
+        run: grep -R "applicationId" android/app/
 
       - name: Install dependencies
         run: flutter pub get
