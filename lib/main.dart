@@ -378,7 +378,7 @@ class AdminPage extends StatelessWidget {
     body: ListView(padding: const EdgeInsets.all(16), children: [
       Container(padding: const EdgeInsets.all(18), decoration: BoxDecoration(color: deepBrown, borderRadius: BorderRadius.circular(18)), child: const Column(crossAxisAlignment: CrossAxisAlignment.start, children: [Text('Welcome Admin', style: TextStyle(color: gold, fontSize: 20, fontWeight: FontWeight.w900)), Text('Manage your DhoopKart marketplace', style: TextStyle(color: Colors.white70))])),
       const SizedBox(height: 14),
-      const GridView.count(shrinkWrap: true, physics: NeverScrollableScrollPhysics(), crossAxisCount: 2, childAspectRatio: 1.8, crossAxisSpacing: 10, mainAxisSpacing: 10, children: [
+       GridView.count(shrinkWrap: true, physics: NeverScrollableScrollPhysics(), crossAxisCount: 2, childAspectRatio: 1.8, crossAxisSpacing: 10, mainAxisSpacing: 10, children: [
         _DashboardTile(icon: Icons.people_outline, title: 'Users'),
         _DashboardTile(icon: Icons.storefront, title: 'Sellers'),
         _DashboardTile(icon: Icons.inventory_2_outlined, title: 'Products'),
