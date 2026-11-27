@@ -1,9 +1,11 @@
 
+
 name: Build DhoopKart APK
 
 on:
   push:
-    branches: [main]
+    branches:
+      - main
   workflow_dispatch:
 
 permissions:
@@ -11,10 +13,11 @@ permissions:
 
 jobs:
   build:
+    name: Build Android APK
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout
+      - name: Checkout Repository
         uses: actions/checkout@v4
 
       - name: Setup Java
@@ -28,18 +31,33 @@ jobs:
         with:
           channel: stable
 
-           - name: Show Android Package Name
-        run: grep -R "applicationId" android/app/
+      - name: Check Project
+        run: |
+          echo "Checking DhoopKart project..."
+          ls -la
+          test -f pubspec.yaml
 
-      - name: Install dependencies
+      - name: Generate Android Project
+        run: |
+          if [ ! -d android ]; then
+            flutter create --platforms=android .
+          fi
+
+      - name: Show Android Package Name
+        run: |
+          grep -R "applicationId" android/app/
+
+      - name: Install Dependencies
         run: flutter pub get
 
-      - name: Build APK
+      - name: Build DhoopKart APK
         run: flutter build apk --release
 
-      - name: Upload APK
+      - name: Upload DhoopKart APK
         uses: actions/upload-artifact@v4
         with:
           name: DhoopKart-APK
           path: build/app/outputs/flutter-apk/app-release.apk
-          
+          if-no-files-found: error
+          retention-days: 7
+            
