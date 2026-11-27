@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "674488315106",
+    "project_id": "dhoopkart-c7e95",
+    "storage_bucket": "dhoopkart-c7e95.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:674488315106:android:8758218fffacd08711c2bb",
+        "android_client_info": {
+          "package_name": "com.example.dhoopkart"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCMK8A9uu0OErImCzO3AW1U9A3YhqPv3bs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
