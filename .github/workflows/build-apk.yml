@@ -1,3 +1,4 @@
+
 name: Build DhoopKart APK
 
 on:
@@ -50,6 +51,35 @@ jobs:
           test -f android/app/google-services.json
           echo "Firebase configuration file found."
 
+      - name: Configure Firebase Google Services
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+
+          gradle = Path("android/app/build.gradle")
+          kotlin = Path("android/app/build.gradle.kts")
+
+          if gradle.exists():
+              target = gradle
+              plugin = '    id "com.google.gms.google-services" version "4.4.2"\n'
+          elif kotlin.exists():
+              target = kotlin
+              plugin = '    id("com.google.gms.google-services") version "4.4.2"\n'
+          else:
+              raise SystemExit("Android app Gradle file not found")
+
+          content = target.read_text()
+
+          if "com.google.gms.google-services" not in content:
+              if "plugins {" not in content:
+                  raise SystemExit("Gradle plugins block not found")
+              content = content.replace("plugins {", "plugins {\n" + plugin, 1)
+              target.write_text(content)
+
+          print("Google Services plugin configured.")
+
+          PY
+
       - name: Install Dependencies
         run: flutter pub get
 
@@ -63,4 +93,3 @@ jobs:
           path: build/app/outputs/flutter-apk/app-release.apk
           if-no-files-found: error
           retention-days: 7
-          
