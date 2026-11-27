@@ -1,5 +1,3 @@
-
-
 name: Build DhoopKart APK
 
 on:
@@ -39,13 +37,18 @@ jobs:
 
       - name: Generate Android Project
         run: |
-          if [ ! -d android ]; then
-            flutter create --platforms=android .
+          if [ ! -f android/app/build.gradle ] && [ ! -f android/app/build.gradle.kts ]; then
+            flutter create --platforms=android --org com.example --project-name dhoopkart .
           fi
 
       - name: Show Android Package Name
         run: |
-          grep -R "applicationId" android/app/
+          grep -R "applicationId" android/app/ --include="*.gradle" --include="*.gradle.kts" || true
+
+      - name: Verify Firebase Config
+        run: |
+          test -f android/app/google-services.json
+          echo "Firebase configuration file found."
 
       - name: Install Dependencies
         run: flutter pub get
@@ -60,4 +63,4 @@ jobs:
           path: build/app/outputs/flutter-apk/app-release.apk
           if-no-files-found: error
           retention-days: 7
-            
+          
