@@ -123,7 +123,7 @@ class DhoopKartApp extends StatelessWidget {
     // Login successful hone ke baad kya karna hai
     // Example:
     Navigator.of(context).pushReplacement(
-      MaterialPageRoute(builder: (_) => const HomeScreen()), // apna home screen daalo
+      MaterialPageRoute(builder: (_) => HomeScreen()), // apna home screen daalo
     );
   },
 );
