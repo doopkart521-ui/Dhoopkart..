@@ -1,16 +1,8 @@
-
-import 'package:firebase_auth/firebase_auth.dart';
-import 'screens/login_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'home_screen.dart';
 
-Future<void> main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
-  runApp(const DhoopKartApp());
-}
+import 'screens/login_screen.dart';
 
 // COLORS
 const Color saffron = Color(0xFFFF8A00);
@@ -18,6 +10,61 @@ const Color deepBrown = Color(0xFF45200E);
 const Color gold = Color(0xFFFFC247);
 const Color cream = Color(0xFFFFF7EC);
 const Color lightBrown = Color(0xFFFFE8CC);
+
+// MAIN
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  runApp(const DhoopKartApp());
+}
+
+// MAIN APP
+class DhoopKartApp extends StatelessWidget {
+  const DhoopKartApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'DhoopKart',
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        useMaterial3: true,
+        scaffoldBackgroundColor: cream,
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: saffron,
+          primary: saffron,
+          secondary: deepBrown,
+        ),
+        appBarTheme: const AppBarTheme(
+          backgroundColor: cream,
+          foregroundColor: deepBrown,
+          elevation: 0,
+          centerTitle: false,
+        ),
+      ),
+      home: StreamBuilder<User?>(
+        stream: FirebaseAuth.instance.authStateChanges(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Scaffold(
+              body: Center(
+                child: CircularProgressIndicator(),
+              ),
+            );
+          }
+
+          if (snapshot.hasData) {
+            return const MainShell();
+          }
+
+          return LoginScreen(
+            onLoginSuccess: () {},
+          );
+        },
+      ),
+    );
+  }
+}
 
 // PRODUCT MODEL
 class Product {
@@ -81,58 +128,6 @@ final List<Product> products = [
     description: 'Traditional temple fragrance.',
   ),
 ];
-
-// MAIN APP
-class DhoopKartApp extends StatelessWidget {
-  const DhoopKartApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'DhoopKart',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        useMaterial3: true,
-        scaffoldBackgroundColor: cream,
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: saffron,
-          primary: saffron,
-          secondary: deepBrown,
-        ),
-        appBarTheme: const AppBarTheme(
-          backgroundColor: cream,
-          foregroundColor: deepBrown,
-          elevation: 0,
-          centerTitle: false,
-        ),
-      ),
-      home: StreamBuilder<User?>(
-  stream: FirebaseAuth.instance.authStateChanges(),
-  builder: (context, snapshot) {
-    if (snapshot.connectionState == ConnectionState.waiting) {
-      return const Scaffold(
-        body: Center(child: CircularProgressIndicator()),
-      );
-    }
-
-    if (snapshot.hasData) {
-      return const MainShell();
-    }
-
-    return LoginScreen(
-  onLoginSuccess: () {
-    // Login successful hone ke baad kya karna hai
-    // Example:
-    Navigator.of(context).pushReplacement(
-      MaterialPageRoute(builder: (_) => HomeScreen()), // apna home screen daalo
-    );
-  },
-);
-  },
-),
-    );
-  }
-}
 
 // MAIN NAVIGATION
 class MainShell extends StatefulWidget {
