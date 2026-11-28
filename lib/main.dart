@@ -118,7 +118,15 @@ class DhoopKartApp extends StatelessWidget {
       return const MainShell();
     }
 
-    return const LoginScreen();
+    return LoginScreen(
+  onLoginSuccess: () {
+    // Login successful hone ke baad kya karna hai
+    // Example:
+    Navigator.of(context).pushReplacement(
+      MaterialPageRoute(builder: (_) => const HomeScreen()), // apna home screen daalo
+    );
+  },
+);
   },
 ),
     );
