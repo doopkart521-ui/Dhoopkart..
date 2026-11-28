@@ -1,4 +1,6 @@
 
+import 'package:firebase_auth/firebase_auth.dart';
+import 'screens/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -103,7 +105,22 @@ class DhoopKartApp extends StatelessWidget {
           centerTitle: false,
         ),
       ),
-      home: const MainShell(),
+      home: StreamBuilder<User?>(
+  stream: FirebaseAuth.instance.authStateChanges(),
+  builder: (context, snapshot) {
+    if (snapshot.connectionState == ConnectionState.waiting) {
+      return const Scaffold(
+        body: Center(child: CircularProgressIndicator()),
+      );
+    }
+
+    if (snapshot.hasData) {
+      return const MainShell();
+    }
+
+    return const LoginScreen();
+  },
+),
     );
   }
 }
