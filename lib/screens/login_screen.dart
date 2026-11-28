@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import '../services/auth_service.dart';
+import 'register_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   final VoidCallback onLoginSuccess;
@@ -25,7 +26,9 @@ class _LoginScreenState extends State<LoginScreen> {
     if (emailController.text.trim().isEmpty ||
         passwordController.text.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Email aur password bharo')),
+        const SnackBar(
+          content: Text('Email aur password bharo'),
+        ),
       );
       return;
     }
@@ -40,14 +43,32 @@ class _LoginScreenState extends State<LoginScreen> {
 
       if (!mounted) return;
       widget.onLoginSuccess();
-    } catch (e) {
+    } on Exception catch (e) {
       if (!mounted) return;
+
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Login failed: $e')),
+        SnackBar(
+          content: Text('Login failed: $e'),
+        ),
       );
     } finally {
-      if (mounted) setState(() => loading = false);
+      if (mounted) {
+        setState(() => loading = false);
+      }
     }
+  }
+
+  void openRegister() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => RegisterScreen(
+          onRegisterSuccess: () {
+            Navigator.of(context).pop();
+          },
+        ),
+      ),
+    );
   }
 
   @override
@@ -67,8 +88,13 @@ class _LoginScreenState extends State<LoginScreen> {
             padding: const EdgeInsets.all(24),
             child: Column(
               children: [
-                const Text('🪔', style: TextStyle(fontSize: 65)),
+                const Text(
+                  '🪔',
+                  style: TextStyle(fontSize: 65),
+                ),
+
                 const SizedBox(height: 12),
+
                 const Text(
                   'DhoopKart',
                   style: TextStyle(
@@ -77,8 +103,13 @@ class _LoginScreenState extends State<LoginScreen> {
                     color: Color(0xFF45200E),
                   ),
                 ),
+
                 const SizedBox(height: 8),
-                const Text('Welcome Back! Login to continue'),
+
+                const Text(
+                  'Welcome Back! Login to continue',
+                ),
+
                 const SizedBox(height: 35),
 
                 TextField(
@@ -136,6 +167,38 @@ class _LoginScreenState extends State<LoginScreen> {
                               fontWeight: FontWeight.bold,
                             ),
                           ),
+                  ),
+                ),
+
+                const SizedBox(height: 20),
+
+                const Text(
+                  "Don't have an account?",
+                  style: TextStyle(
+                    color: Color(0xFF45200E),
+                    fontSize: 14,
+                  ),
+                ),
+
+                const SizedBox(height: 8),
+
+                SizedBox(
+                  width: double.infinity,
+                  height: 50,
+                  child: OutlinedButton(
+                    onPressed: openRegister,
+                    style: OutlinedButton.styleFrom(
+                      foregroundColor: const Color(0xFFFF8A00),
+                      side: const BorderSide(
+                        color: Color(0xFFFF8A00),
+                      ),
+                    ),
+                    child: const Text(
+                      'CREATE NEW ACCOUNT',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                   ),
                 ),
               ],
